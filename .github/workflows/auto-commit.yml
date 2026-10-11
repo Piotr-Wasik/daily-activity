@@ -1,0 +1,22 @@
+name: Auto Commit
+
+on:
+  schedule:
+    - cron: '0 12 * * *' # Wykonuje się codziennie o 12:00 UTC
+  workflow_dispatch: # Pozwala też uruchomić ręcznie przyciskiem
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Auto commit
+        run: |
+          date >> activity.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add activity.txt
+          git commit -m "Daily activity commit"
+          git push
